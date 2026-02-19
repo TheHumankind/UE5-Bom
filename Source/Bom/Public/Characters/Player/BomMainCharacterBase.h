@@ -14,4 +14,9 @@ class BOM_API ABomMainCharacterBase : public ABomCharacterBase
 {
 	GENERATED_BODY()
 	
+	
+public:
+
+	void RotateCharacterTowardCursor(const FVector& LookAtLocation);
+	
 };

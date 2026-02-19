@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BomPlayerController.generated.h"
 
+class ABomMainCharacterBase;
 class UInputMappingContext;
 class UInputAction;
 /**
@@ -18,8 +19,11 @@ class BOM_API ABomPlayerController : public APlayerController
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual  void Tick(float DeltaSeconds) override;
+ 
 private:
+	ABomMainCharacterBase* MainCharacter;
+	
 	FInputModeGameAndUI InputModeData;
 	void CursorTrace();
 	virtual void SetupInputComponent() override;
