@@ -16,18 +16,21 @@ class BOM_API ABomPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
-
-	UPROPERTY(EditAnywhere, Category = "Input | Action")
-	UInputAction* MoveInputAction;
-
-	UPROPERTY(EditAnywhere, Category = "Input | Action")
-	UInputAction* ShootInputAction;
-
-	UPROPERTY(EditAnywhere, Category = "Input | IMC")
-	UInputMappingContext* PlayerMappingContext;
-
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	FInputModeGameAndUI InputModeData;
+	void CursorTrace();
+	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditAnywhere, Category = "Input | IMC")
+	TObjectPtr<UInputMappingContext> PlayerMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UInputAction> MoveAction;
+
+	void Move(const struct FInputActionValue& ActionValue);
+	
 	
 };
