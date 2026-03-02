@@ -7,6 +7,6 @@ void ABomMainCharacterBase::RotateCharacterTowardCursor(const FVector& LookAtLoc
 {
 	FVector LookAtVector = LookAtLocation - GetActorLocation();
 	FRotator TargetRotation = FRotator(0, LookAtVector.Rotation().Yaw, 0);
-	FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, 2.0f, 0.2f);
+	FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, 1.0f, 0.2f);
 	SetActorRotation(InterpRotation);
 }

@@ -45,6 +45,7 @@ void ABomPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABomPlayerController::Move);
+	EnhancedInputComponent->BindAction(ToggleGunAction, ETriggerEvent::Started, this, &ABomPlayerController::ToggleGun);
 }
 
 void ABomPlayerController::Move(const struct FInputActionValue& ActionValue)
@@ -61,4 +62,15 @@ void ABomPlayerController::Move(const struct FInputActionValue& ActionValue)
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisValue.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisValue.X);
 	}
+}
+
+void ABomPlayerController::ToggleGun(const FInputActionValue& ActionValue)
+{
+	if (!IsValid(MainCharacter))
+		return;
+	
+	if (MainCharacter->GetGait() == ULocomotionStateEnums::Unarmed)
+		MainCharacter->Arm();
+	else if (MainCharacter->GetGait() == ULocomotionStateEnums::Armed)
+		MainCharacter->Disarm();
 }
