@@ -18,22 +18,35 @@ class BOM_API ABomMainCharacterBase : public ABomCharacterBase
 	
 	
 public:
+	ABomMainCharacterBase();
+	
 	void RotateCharacterTowardCursor(const FVector& LookAtLocation);
 
-	UFUNCTION(BlueprintCallable)
-	void Disarm() { CurrentGait = ULocomotionStateEnums::Unarmed; };
+
 
 	UFUNCTION(BlueprintCallable)
-	void Arm() { CurrentGait = ULocomotionStateEnums::Armed; };
+	UGaitEnums GetGait() const { return CurrentGait; };
 
 	UFUNCTION(BlueprintCallable)
-	ULocomotionStateEnums GetGait() const { return CurrentGait; };
+	void UpdateGait(UGaitEnums DesiredGait);
+
+	ULocomotionStateEnums GetLocomotionState() const { return LocomotionState; };
+
+	UFUNCTION(BlueprintCallable)
+	void SetLocomotionState(ULocomotionStateEnums DesiredState);
 
 private:
+	
 	UPROPERTY()
-	ULocomotionStateEnums CurrentGait = ULocomotionStateEnums::Unarmed;
+	UGaitEnums CurrentGait = UGaitEnums::Walking;
 
 	UPROPERTY()
-	TMap<ULocomotionStateEnums, FGaitSettings> GaitSettings;
+	UGaitEnums PreviousGait;
+
+	UPROPERTY()
+	TMap<UGaitEnums, FGaitSettings> GaitSettings;
+
+	UPROPERTY()
+	ULocomotionStateEnums LocomotionState = ULocomotionStateEnums::Unarmed;
 	
 };

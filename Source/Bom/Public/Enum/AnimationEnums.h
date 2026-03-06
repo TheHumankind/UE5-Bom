@@ -9,7 +9,9 @@ UENUM(BlueprintType)
 enum class ULocomotionStateEnums :uint8
 {
 	Unarmed UMETA(DisplayName = "Unarmed"),
-	Armed UMETA(DisplayName = "Armed"),
+	Pistol UMETA(DisplayName = "Pistol"),
+	Rifle UMETA(DisplayName = "Rifle"),
+	Shotgun UMETA(DisplayName = "Shotgun"),
 };
 
 UENUM(BlueprintType)

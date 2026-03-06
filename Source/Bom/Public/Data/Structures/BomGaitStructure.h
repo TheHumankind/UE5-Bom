@@ -10,22 +10,17 @@ struct FGaitSettings
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	float MaxWalkSpeed;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gait Settings", meta=(ClampMin="0.0"))
+	float MaxWalkSpeed = 600.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	float MaxAcceleration;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gait Settings", meta=(ClampMin="0.0"))
+	float MaxAccelerationSpeed = 2048.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	float BreakingDeceleration;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	float BrakingFrictionFactor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	bool UseSeparateBreakingFriction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gait Settings")
-	float BreakingFriction;
+	FGaitSettings() = default;
 	
+	FGaitSettings(float InMaxWalkSpeed, float InMaxAccelerationSpeed)
+		: MaxWalkSpeed(InMaxWalkSpeed)
+		, MaxAccelerationSpeed(InMaxAccelerationSpeed)
+	{}
 };
+

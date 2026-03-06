@@ -35,10 +35,28 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 	UPROPERTY(EditAnywhere, Category = "Input | Action")
-	TObjectPtr<UInputAction> ToggleGunAction;
+	TObjectPtr<UInputAction> EndlessJogAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UInputAction> JogAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UInputAction> GetPrimaryGunAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UInputAction> GetSecondaryGunAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UInputAction> HideGunAction;
 
 	void Move(const struct FInputActionValue& ActionValue);
 
-	void ToggleGun(const struct FInputActionValue& ActionValue);
+	void Jog(const struct FInputActionValue& ActionValue);
+
+	void GetPrimaryGun(const struct FInputActionValue& ActionValue);
+
+	void GetSecondaryGun(const struct FInputActionValue& ActionValue);
+
+	void HideGun(const struct FInputActionValue& ActionValue);
 	
 };

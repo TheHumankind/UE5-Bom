@@ -45,7 +45,12 @@ void ABomPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABomPlayerController::Move);
-	EnhancedInputComponent->BindAction(ToggleGunAction, ETriggerEvent::Started, this, &ABomPlayerController::ToggleGun);
+	EnhancedInputComponent->BindAction(JogAction, ETriggerEvent::Started, this, &ABomPlayerController::Jog);
+	EnhancedInputComponent->BindAction(JogAction, ETriggerEvent::Completed, this, &ABomPlayerController::Jog);
+	EnhancedInputComponent->BindAction(EndlessJogAction, ETriggerEvent::Started, this, &ABomPlayerController::Jog);
+	EnhancedInputComponent->BindAction(GetPrimaryGunAction, ETriggerEvent::Started, this, &ABomPlayerController::GetPrimaryGun);
+	EnhancedInputComponent->BindAction(GetSecondaryGunAction, ETriggerEvent::Started, this, &ABomPlayerController::GetSecondaryGun);
+	EnhancedInputComponent->BindAction(HideGunAction, ETriggerEvent::Started, this, &ABomPlayerController::HideGun);
 }
 
 void ABomPlayerController::Move(const struct FInputActionValue& ActionValue)
@@ -64,13 +69,32 @@ void ABomPlayerController::Move(const struct FInputActionValue& ActionValue)
 	}
 }
 
-void ABomPlayerController::ToggleGun(const FInputActionValue& ActionValue)
+void ABomPlayerController::Jog(const struct FInputActionValue& ActionValue)
 {
-	if (!IsValid(MainCharacter))
-		return;
-	
-	if (MainCharacter->GetGait() == ULocomotionStateEnums::Unarmed)
-		MainCharacter->Arm();
-	else if (MainCharacter->GetGait() == ULocomotionStateEnums::Armed)
-		MainCharacter->Disarm();
+	if (MainCharacter->GetGait() == UGaitEnums::Walking)
+	{
+		MainCharacter->UpdateGait(UGaitEnums::Jogging);
+	}
+	else if (MainCharacter->GetGait() == UGaitEnums::Jogging)
+	{
+		MainCharacter->UpdateGait(UGaitEnums::Walking);
+	}
+}
+
+void ABomPlayerController::GetPrimaryGun(const struct FInputActionValue& ActionValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Primary"));
+	MainCharacter->SetLocomotionState(ULocomotionStateEnums::Rifle);
+}
+
+void ABomPlayerController::GetSecondaryGun(const struct FInputActionValue& ActionValue)
+{
+	UE_LOG(LogTemp, Error, TEXT("Secondary"));
+	MainCharacter->SetLocomotionState(ULocomotionStateEnums::Pistol);
+}
+
+void ABomPlayerController::HideGun(const struct FInputActionValue& ActionValue)
+{
+	UE_LOG(LogTemp, Error, TEXT("Hide Gun"));
+	MainCharacter->SetLocomotionState(ULocomotionStateEnums::Unarmed);
 }
