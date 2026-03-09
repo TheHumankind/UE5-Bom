@@ -3,6 +3,8 @@
 
 #include "Characters/Player/BomMainCharacterBase.h"
 
+#include "Actors/Weapon/BomGunBase.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ABomMainCharacterBase::ABomMainCharacterBase()
@@ -12,11 +14,18 @@ ABomMainCharacterBase::ABomMainCharacterBase()
 	UpdateGait(UGaitEnums::Walking);
 }
 
+void ABomMainCharacterBase::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
+
+
 void ABomMainCharacterBase::RotateCharacterTowardCursor(const FVector& LookAtLocation)
 {
 	FVector LookAtVector = LookAtLocation - GetActorLocation();
 	FRotator TargetRotation = FRotator(0, LookAtVector.Rotation().Yaw, 0);
 	FRotator InterpRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, 1.0f, 0.2f);
+	LastLookAtLocation = LookAtLocation;
 	SetActorRotation(InterpRotation);
 }
 
@@ -37,5 +46,31 @@ void ABomMainCharacterBase::UpdateGait(UGaitEnums DesiredGait)
 void ABomMainCharacterBase::SetLocomotionState(ULocomotionStateEnums DesiredState)
 {
 	LocomotionState = DesiredState;
-	UE_LOG(LogTemp, Warning, TEXT("SetLocomotionState - %hhd"), LocomotionState);
 }
+
+void ABomMainCharacterBase::SetSecondaryGun(TSubclassOf<ABomGunBase> NewSecondaryGun)
+{
+	FTransform SpawnTransform;
+
+	if (IsValid(SecondaryGun))
+		return;
+
+	SecondaryGun = GetWorld()->SpawnActorDeferred<ABomGunBase>(
+		NewSecondaryGun,
+		SpawnTransform,
+		this,
+		nullptr,
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+	);
+
+	if (SecondaryGun)
+	{
+		SecondaryGun->AttachToComponent(
+			GetMesh(),
+			FAttachmentTransformRules::SnapToTargetIncludingScale,
+			"PistolHolderSocket");
+
+		SecondaryGun->FinishSpawning(SpawnTransform);
+	}
+}
+

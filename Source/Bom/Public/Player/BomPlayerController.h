@@ -49,6 +49,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input | Action")
 	TObjectPtr<UInputAction> HideGunAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input | Action")
+	TObjectPtr<UAnimMontage> EquipMontage;
+
 	void Move(const struct FInputActionValue& ActionValue);
 
 	void Jog(const struct FInputActionValue& ActionValue);
@@ -58,5 +61,7 @@ private:
 	void GetSecondaryGun(const struct FInputActionValue& ActionValue);
 
 	void HideGun(const struct FInputActionValue& ActionValue);
+
+	
 	
 };

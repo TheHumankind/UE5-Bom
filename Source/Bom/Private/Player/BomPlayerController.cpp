@@ -90,7 +90,14 @@ void ABomPlayerController::GetPrimaryGun(const struct FInputActionValue& ActionV
 void ABomPlayerController::GetSecondaryGun(const struct FInputActionValue& ActionValue)
 {
 	UE_LOG(LogTemp, Error, TEXT("Secondary"));
-	MainCharacter->SetLocomotionState(ULocomotionStateEnums::Pistol);
+	UAnimInstance* AnimInst = MainCharacter->GetMesh()->GetAnimInstance();
+	if (AnimInst)
+	{
+		AnimInst->Montage_Play(EquipMontage);
+		MainCharacter->SetLocomotionState(ULocomotionStateEnums::Pistol);
+		//MainCharacter->PlayAnimMontage(EquipMontage, 1, FName("DefaultSlot"));
+	}
+	
 }
 
 void ABomPlayerController::HideGun(const struct FInputActionValue& ActionValue)
